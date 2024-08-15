@@ -1,0 +1,22 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Candidate {
+  createdAt DateTime             @default(now())
+  email     String               @unique
+  id        String               @id @default(cuid())
+  lastName  String
+  name      String
+  status    EnumCandidateStatus?
+  updatedAt DateTime             @updatedAt
+}
+
+enum EnumCandidateStatus {
+  Option1
+}
