@@ -1,0 +1,66 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Candidate {
+  createdAt DateTime             @default(now())
+  email     String               @unique
+  id        String               @id @default(cuid())
+  lastName  String
+  name      String
+  status    EnumCandidateStatus?
+  updatedAt DateTime             @updatedAt
+}
+
+model Order {
+  client    Client?  @relation(fields: [ID], references: [id])
+  ID        String?  @unique
+  contact   Contact? @relation(fields: [ID], references: [id])
+  ID        String?  @unique
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Placement {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Shortlist {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Contact {
+  clients   Client?
+  company   String?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  lastName  String?
+  name      String?
+  orders    Order?
+  updatedAt DateTime @updatedAt
+}
+
+model Client {
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  mainContact Contact? @relation(fields: [name], references: [id])
+  name        String?  @unique
+  name        String?
+  orders      Order?
+  updatedAt   DateTime @updatedAt
+}
+
+enum EnumCandidateStatus {
+  Option1
+}
